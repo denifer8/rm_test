@@ -1,22 +1,36 @@
-import logo from './logo.svg';
+import logo from './img/rick-morty.png';
 import './App.css';
+import Componentes from './components/Componentes';
+import { useState } from 'react';
 
 function App() {
+  const [personajes, setPersonajes] = useState(null);
+  const  buscarPersonajes = async () => {
+   
+    const data = await fetch("https://rickandmortyapi.com/api/character")
+    const apiPersonajes = await data.json();
+    setPersonajes(apiPersonajes.results)
+
+  }
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1 className='title'>Rick and Morty</h1>
+        {
+          !personajes ?
+          (
+              <>
+            <img src={logo} className="img-home" alt="logo" />
+            <button onClick={buscarPersonajes}>Ver personajes</button>
+            </>
+          ) :
+          (
+            <Componentes personajes={personajes} setPersonajes={setPersonajes}/>
+          )
+        }
+
+        
+
       </header>
     </div>
   );
